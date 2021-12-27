@@ -946,7 +946,7 @@ else if(warriorClass==2)
 }
 if(endDecider==false)
 {
-        System.out.println("-----      /\\    |\\     /|    |-----       ------    \\    /   |----    ___");
+        	System.out.println("-----      /\\    |\\     /|    |-----       ------    \\    /   |----    ___");
 		System.out.println("|  _      /  \\   | \\  /  |    |-----       |    |     \\  /    |----   |___|");
 		System.out.println("|___|    /    \\  |  \\/   |    |_____       |____|      \\/     |____   |  \\");
 }
