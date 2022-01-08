@@ -13,7 +13,7 @@ public static void main (String args[])
 	double ranged=0;
 	double health=0;
 	double magic=0;
-	int magicalMultiplier=randomGen.nextInt(2)- -1;
+	int magicalMultiplier=0;
 	int speed=0;
 	int numOfHE=0;
 	int numOfBE=0;
@@ -21,6 +21,7 @@ public static void main (String args[])
 	int gold=0;
 	int numOfMana=3;
         int armorRank=0;
+        int wandRank=0;
         int bowRank=1;
         int numOfArrow=5;
         int numOfFlameArrow=0;
@@ -29,6 +30,7 @@ public static void main (String args[])
         boolean hasQuickShoes = false;
         boolean haveStoneStomper=false;
         boolean haveFlameSword=false;
+        boolean havePheonixFeather=false;
         boolean flameDMG = false;
         int numOfBloonBombs = 0;
         double rankOfSword=1;
@@ -304,12 +306,13 @@ else if(d3==3)
 	System.out. println(friendName+": The goblins are ready to attack, let's fight! \n I’ll take the one on the left!");
 //random variable for goblin damage insert here
 	Double bElixirBuff=1.0;
+        double flameDMGPercent=0;
 	double battleHealth=health;
         int inventoryD=0;
 	int dmgToPlayer=0;
 	int battleChoice=0;
 	double dmg=0;
-	int goblinHealth=randomGen.nextInt(15)-10;
+	int goblinHealth=randomGen.nextInt(15)+10;
         double mobHealth=goblinHealth;
 	int goblinSpeed=0;
         int mobType=1;
@@ -320,6 +323,7 @@ else if(d3==3)
 	battleChoice=scan.nextInt();
 	while(battleChoice != 385)
 	{
+                flameDMGPercent=Math.floor(mobHealth/30);
 		if(mobHealth<=0)
 		{
 			System.out.println("Congratulations you defeated a goblin!");
@@ -348,29 +352,40 @@ else if(d3==3)
                                 battleChoice=scan.nextInt();
                                 if(battleChoice==1)
                                 {
-                                    dmg=melee*bElixirBuff-5;
+                                    dmg=(melee*bElixirBuff)-5;
                                     if(mobType==2)
                                     {
                                         dmg*=3;
                                     }
-                                    if(mobHealth<0)
-                                    {
-                                        mobHealth=0;
-                                    }
                                     System.out.println("You used the stone stomper!");
-                                    System.out.println("You dealt "+dmg+" damadge. Leaving the goblin with "+mobHealth);
                                     if(mobType==2)
                                     {
-                                        System.out.println("Super Effective! Dealt 3x damadge!");
+                                        System.out.println("Super Effective against stone monsters! Dealt 3x damadge!");
                                     }
+                                    System.out.println("You dealt "+dmg+" damage. Leaving the goblin with "+mobHealth);
+                                }
+                                if(battleChoice==2 && haveFlameSword==true)
+                                {
+                                    dmg=(melee*bElixirBuff)-5;
+                                    mobHealth-=dmg;
                                 }
                             }
+                            else
+                            {
+                                dmg=melee*bElixirBuff;
+                                mobHealth-=dmg;
+                                System.out.println("You attacked the goblin with your sword. It dealt "+dmg+" leaving it with "+mobHealth+" health");
+                                flameDMG=true;
+                                dmg=0;
+                            }
                         }
+                        else
+                        {
 			dmg=melee*bElixirBuff;
-                        mobHealth=mobHealth-dmg;
-			System.out.println("You attacked the goblin with your sword. It dealt "+dmg+" leaving it with "+goblinHealth+" health");
-			System.out.println("Damage dealt to player while attacking up close");
+                        mobHealth-=dmg;
+			System.out.println("You attacked the goblin with your sword. It dealt "+dmg+" leaving it with "+mobHealth+" health");
 			dmg=0;
+                        }
 		}
 		else if(battleChoice==2 && numOfArrow>0 ||battleChoice==2 && numOfFlameArrow>0)
 		{
@@ -393,13 +408,13 @@ else if(d3==3)
 			dmg=(ranged*bElixirBuff);
 			mobHealth=mobHealth-dmg;
 			numOfArrow-=1;
-			System.out.println("You shot the goblin with your bow. dealt "+dmg+" leaving it with "+goblinHealth+". You have "+numOfArrow+" arrows left.");
+			System.out.println("You shot the goblin with your bow. dealt "+dmg+" leaving it with "+mobHealth+". You have "+numOfArrow+" arrows left.");
 			dmg=0;
                         }
                         if(bloonBombInAir=true)
                         {
                             System.out.println("Your arrow popped the bloon bomb dropping it from the sky dealing 50 damadge!");
-                            goblinHealth-=50;
+                            mobHealth-=50;
                         }
                         battleChoice=2;
                         dmg=0;
@@ -409,11 +424,12 @@ else if(d3==3)
 			System.out.println("Out of arrows. Please try again.");
 			dmg=0;
 		}
-		else if(battleChoice==3 && numOfMana>0)
+		if(battleChoice==3 && numOfMana>0)
 		{
+                        magicalMultiplier=randomGen.nextInt(2)+ -1;
 			dmg=(magic* magicalMultiplier)*bElixirBuff;
 			mobHealth=mobHealth-dmg;
-			System.out.println("You cast a magical spell on the goblin dealing "+dmg+" damage leaving the goblin with "+goblinHealth+" health. Your magic fluctuated and had a multiplier of "+magicalMultiplier);
+			System.out.println("You cast a magical spell on the goblin dealing "+dmg+" damage leaving the goblin with "+mobHealth+" health. Your magic fluctuated and had a multiplier of "+magicalMultiplier);
 			numOfMana-=1;
 			System.out.println("You depleted your mana by 1 leaving you with "+numOfMana);
 			dmg=0;
@@ -425,9 +441,13 @@ else if(d3==3)
 			numOfMana=0;
 			dmg=0;
 		}
-		else if(battleChoice == 4)
+		if(battleChoice == 4)
 		{
 			System.out.println("Choose which of the following you want to use press 5 to leave your inventory.");
+                        if(numOfHE==0 && numOfBE==0 && numOfME==0 && numOfBloonBombs==0)
+                        {
+                            
+                        }
 			if(numOfHE > 0)
 			{
                             System.out.println("(1		Health Elixir >>> "+numOfHE);
@@ -515,7 +535,12 @@ else if(d3==3)
 			endDecider=false;
                         battleChoice=385;
 			}
-			if(mobHealth >0)
+                        if(flameDMG)
+                        {
+                            mobHealth-=flameDMGPercent;
+                            System.out.println("The goblin's burn hurt him dealing "+flameDMGPercent+" leaving it with "+mobHealth);
+                        }
+			if(mobHealth>0)
                         {
                         System.out.println("Scroll up to view battle results.");
                         System.out.println("Next Turn");
@@ -525,7 +550,7 @@ else if(d3==3)
 			battleChoice=scan.nextInt();
                         }
                         }
-        if(battleChoice==385)
+        if(battleChoice==385 && endDecider==false)
         {
             endDecider=false;
             break;
@@ -574,6 +599,7 @@ else if(warriorClass==2)
         int costOfSword=50;
         int costOfArmor=45;
         int costOfBow=30;
+        int costOfWand=50;
         int numOfItemPurchase=0;
 	if(d4==2)
 	{
@@ -934,8 +960,15 @@ else if(warriorClass==2)
                     while(d5==4)
                     {
                         System.out.println("Harry: Can you close the door? *sigh* \n~Wingardion Leviosa~ \nA stool floats up and pushes the door closed.");
-                        
-                        
+                        if(wandRank<10)
+                        {
+                            System.out.println("(1  rank "+wandRank+" wand >>> "+costOfWand+" gold.");
+                        }
+                        System.out.println("(2  Heart Breaker >>> 500 gold");
+                        if(haveBeatenSerpentine && havePheonixFeather==false)
+                        {
+                        System.out.println("(3  Pheonix Feather");
+                        }
                     }
                     
                     
@@ -946,7 +979,7 @@ else if(warriorClass==2)
 }
 if(endDecider==false)
 {
-        	System.out.println("-----      /\\    |\\     /|    |-----       ------    \\    /   |----    ___");
+                System.out.println("-----      /\\    |\\     /|    |-----       ------    \\    /   |----    ___");
 		System.out.println("|  _      /  \\   | \\  /  |    |-----       |    |     \\  /    |----   |___|");
 		System.out.println("|___|    /    \\  |  \\/   |    |_____       |____|      \\/     |____   |  \\");
 }
