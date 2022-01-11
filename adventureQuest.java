@@ -967,9 +967,18 @@ else if(warriorClass==2)
                         System.out.println("(2  Heart Breaker >>> 500 gold");
                         if(haveBeatenSerpentine && havePheonixFeather==false)
                         {
-                        System.out.println("(3  Pheonix Feather");
+                        System.out.println("(3  Pheonix Feather >>> 2000 gold");
                         }
-                    }
+                        if(havePheonixFeather)
+                        {
+                        System.out.println("(4  Pixie's Pouch >>> 5000");
+                        }
+                        shopDecision=scan.nextInt();
+                        if(shopDecision==1 && gold>=costOfWand)
+                        {
+                            System.out.println("Are you sure you want to buy rank "+wandRank+" rank wand?");
+
+                    	}
                     
                     
                 }
